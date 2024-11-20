@@ -20,18 +20,6 @@
     v: "weekly",
 });
 
-function navigateToPage() {
-    window.location.href = "main-map.html";
-}
-
-function navigateToPage1() {
-    window.location.href = "mypage.html";
-}
-
-function navigateToPage2() {
-    window.location.href = "myPlan.html";
-}
-
 // Initialize and add the map
 let map;
 

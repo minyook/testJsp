@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 localStorage.setItem('selectedPlanId', docId);
 
                 // detail.html 페이지로 이동
-                window.location.href = 'detail.html';
+                window.location.href = 'detail.jsp';
             });
         });
     } catch (e) {

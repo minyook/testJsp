@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -28,10 +28,10 @@
             window.location.href = 'main-map.html';
         }
         function navigateToPage3() {
-            window.location.href = 'mypage.html';
+            window.location.href = 'mypage.jsp';
         }
         function navigateToPage4() {
-            window.location.href = 'bookmark.html';
+            window.location.href = 'myPlan.jsp';
         }
     </script>
     <script type="module" src="/js/detail.js"></script>

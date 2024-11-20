@@ -1,25 +1,25 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great Vibes&display=swap" rel="stylesheet">
     <title>나의 여행 계획</title>
     <link rel="stylesheet" href="/css/myPlan.css">
     <script type="module" src="/js/myPlan.js" defer></script>
 </head>
 <script>
     function navigateToPage() {
-        window.location.href = "main-map.html"; // 클릭 시 main-map.html로 이동
+      window.location.href = "main-map.html"; // 클릭 시 main-map.html로 이동
     }
 
     function navigateToPage1() {
-        window.location.href = "mypage.html"; // 클릭 시 mypage.html로 이동
+      window.location.href = "mypage.jsp"; // 클릭 시 main-map.html로 이동
     }
 
     function navigateToPage2() {
-        window.location.href = "myPlan.html"; // 클릭 시 myPlan.html로 이동
+      window.location.href = "myPlan.jsp"; // 클릭 시 main-map.html로 이동
     }
 </script>
 <body>
