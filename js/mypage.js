@@ -1,4 +1,5 @@
-const firebaseConfig = {
+document.addEventListener("DOMContentLoaded", function() {
+  const firebaseConfig = {
     apiKey: "AIzaSyCN3O66LzTSkP49iLxQaRYQGJYPGPttReU",
     authDomain: "web-project-planify.firebaseapp.com",
     projectId: "web-project-planify",
@@ -7,8 +8,10 @@ const firebaseConfig = {
     appId: "1:97117691884:web:92c58cc40df3aba17e6ac9",
     measurementId: "G-BHGJ3YWP1Z"
   };
-  
+
   firebase.initializeApp(firebaseConfig);
+  console.log(firebase); // Firebase 객체 확인
+});
   var firestore = firebase.firestore();
   // Firebase 인증 상태 변화 감지
   firebase.auth().onAuthStateChanged(function (user) {
