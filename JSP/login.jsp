@@ -1,0 +1,48 @@
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/login.css" />
+    <title>로그인</title>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-storage.js"></script>
+    
+    <!-- 로그인 처리 JavaScript 파일 -->
+    <script type="module" defer src="/js/login.js"></script>
+</head>
+<body>
+    <div class="MainLogin">
+        <div class="Mainleft">
+            <div class="box">
+                <img class="logoimg" src="/image/logo.png" />
+            </div>
+        </div>
+        <div class="Mainright">
+            <div class="loginBox">
+                <h1 id="loginTitle">로그인</h1>
+                <form id="login-form">
+                    <label for="id">아이디</label>
+                    <input type="email" id="email" placeholder="이메일" />
+                    <br />
+                    <label for="password" style="margin-top: 30px">비밀번호</label>
+                    <input type="password" id="password" placeholder="비밀번호" />
+                    <br />
+                    <button style="margin-top: 20px; margin-bottom: 20px" type="submit">로그인</button>
+                </form>
+
+                <div id="loginloadbox" style="display: none">
+                    <div class="spinner-grow text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

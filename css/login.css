@@ -1,0 +1,166 @@
+/* Main container styling */
+.MainLogin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f6f9;
+    font-family: 'Arial', sans-serif;
+}
+
+.Mainleft, .Mainright {
+    flex: 1;
+    padding: 40px;
+}
+
+.Mainleft {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #34495e;
+    animation: slideInFromLeft 1s ease-in-out;
+}
+
+.box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logoimg {
+    max-width: 80%;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.Mainright {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: slideInFromRight 1s ease-in-out;
+}
+
+.loginBox {
+    background: #ffffff;
+    padding: 50px;
+    width: 450px; /* 로그인 박스 가로 크기 */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    animation: bounceIn 1.2s ease-in-out;
+}
+
+h1#loginTitle {
+    margin-bottom: 20px;
+    color: #2c3e50;
+    text-align: center;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    animation: fadeInUp 1s ease-in-out;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+    animation: fadeInUp 1s ease-in-out;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    animation: fadeInUp 1s ease-in-out;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+/* 로딩 박스 스타일 */
+#loginloadbox {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.9); /* 반투명한 배경 */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    animation: scaleUp 0.8s ease-in-out;
+}
+
+.spinner-grow {
+    width: 3rem;
+    height: 3rem;
+    animation: grow-spin 1.5s linear infinite;
+}
+
+/* 배경 흐림 처리 */
+body.loading::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 어두운 회색빛 */
+    z-index: 999;
+    backdrop-filter: blur(5px);
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInFromLeft {
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInFromRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    60% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); }
+}
+
+@keyframes fadeInUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes grow-spin {
+    0% { transform: scale(0.5); opacity: 0.5; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.7; }
+}

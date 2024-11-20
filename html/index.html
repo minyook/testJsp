@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Great Vibes&display=swap" rel="stylesheet">
+    <title>Planify</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="left-panel">
+        <div class="logo animate__animated animate__backInLeft" onclick="navigateToPage()">Planify</div>
+        <div class="buttons">
+          <button
+            class="login-button animate__animated animate__fadeIn animate__delay-1s"
+            onclick="navigateToPage4()"
+          >
+            로그인
+          </button>
+          <button
+            class="signup-button animate__animated animate__fadeIn animate__delay-1s"
+            onclick="navigateToPage3()"
+          >
+            회원가입
+          </button>
+        </div>
+        
+      </div>
+      <div class="right-panel">
+        <p class="description" id="animated-text"></p>
+      </div>
+    </div>
+  </body>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const text =
+        "여행 계획을 대신 짜주는 AI 여행 계획 사이트!\n이용을 원하신다면 로그인을 해주세요!";
+      let i = 0;
+      const speed = 50; // 타이핑 속도 (ms)
+
+      function typeWriter() {
+        if (i < text.length) {
+          document.getElementById("animated-text").innerHTML +=
+            text.charAt(i) === "\n" ? "<br>" : text.charAt(i);
+          i++;
+          setTimeout(typeWriter, speed);
+        }
+      }
+
+      typeWriter();
+    });
+
+    function navigateToPage() {
+      window.location.href = 'index.html'; // 클릭 시 main-map.html로 이동
+    }
+
+    function navigateToPage3() {
+      window.location.href = 'join.html'
+    }
+    function navigateToPage4() {
+      window.location.href = 'login.html'
+    }
+  </script>
+</html>
