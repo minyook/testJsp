@@ -1,40 +1,26 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/login.css" />
-    <script type="module" defer src="/js/join.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-storage.js"></script>
-    <title>회원가입</title>
-</head>
-<body>
-    <div class="MainLogin">
-        <div class="Mainleft">
-            <div class="box">
-                <img class="logoimg" src="/image/logo.png" />
-            </div>
-        </div>
-        <div class="Mainright">
-            <div class="loginBox">
-                <h1 id="loginTitle">회원가입</h1>
-                <form id="signup-form" method="post" onsubmit="return handleSignUp(event)">
-                    <label>이메일</label><br>
-                    <input type="email" id="email" placeholder="이메일"><br>
-                    <label style="margin-top: 20px;">비밀번호</label><br>
-                    <input type="password" id="password" placeholder="비밀번호"><br>
-                    <label style="margin-top: 20px;">비밀번호 확인</label><br>
-                    <input type="password" id="confirm-password" placeholder="비밀번호 확인"><br>
-                    <label style="margin-top: 20px;">이름</label><br>
-                    <input type="text" id="nickname" placeholder="반드시 본인 이름으로 부탁드립니다."><br>
-                    <button style="margin-top: 20px; margin-bottom: 20px;" type="submit">회원가입</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+<%@ page import="java.io.*, javax.servlet.*, javax.servlet.http.*" %>
+
+<%
+    // 요청에서 사용자 데이터 가져오기
+    String email = request.getParameter("email");
+    String nickname = request.getParameter("nickname");
+
+    // 세션 생성 및 사용자 데이터 저장
+    HttpSession session = request.getSession();
+    session.setAttribute("userEmail", email);
+    session.setAttribute("userNickname", nickname);
+
+    // 예를 들어, 추가로 서버에서 사용자 등록 확인 로직을 수행할 수 있음
+    if (email != null && nickname != null) {
+        // 서버 측 확인 및 로깅
+        out.println("서버에서 회원가입 데이터 수신: " + email + " (" + nickname + ")");
+        
+        // 회원가입 성공 메시지를 클라이언트로 반환
+        response.sendRedirect("login.html"); // 성공 후 리다이렉트할 페이지
+    } else {
+        // 오류 처리
+        out.println("잘못된 데이터입니다.");
+        response.sendRedirect("join.html"); // 오류 시 다시 회원가입 페이지로 리다이렉트
+    }
+%>
