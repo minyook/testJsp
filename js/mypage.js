@@ -1,57 +1,37 @@
-document.addEventListener("DOMContentLoaded", function() {
-  const firebaseConfig = {
-    apiKey: "AIzaSyCN3O66LzTSkP49iLxQaRYQGJYPGPttReU",
-    authDomain: "web-project-planify.firebaseapp.com",
-    projectId: "web-project-planify",
-    storageBucket: "web-project-planify.firebasestorage.app",
-    messagingSenderId: "97117691884",
-    appId: "1:97117691884:web:92c58cc40df3aba17e6ac9",
-    measurementId: "G-BHGJ3YWP1Z"
-  };
+document.addEventListener("DOMContentLoaded", function () {
+  // 서버에서 사용자 정보를 가져오기
+  fetch('/getUserInfo.jsp', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+  })
+      .then(response => response.json())
+      .then(data => {
+          if (data.status === 'success') {
+              // 서버에서 받은 사용자 정보를 표시
+              document.getElementById('userName').textContent = '이름: ' + data.nickname;
+              document.getElementById('email').textContent = '아이디: ' + data.email;
+          } else {
+              alert('사용자 정보를 가져오지 못했습니다. 다시 로그인해주세요.');
+              location.href = 'login.jsp'; // 로그인 페이지로 리디렉션
+          }
+      })
+      .catch(error => console.error('사용자 정보 요청 중 오류 발생:', error));
 
-  firebase.initializeApp(firebaseConfig);
-  console.log(firebase); // Firebase 객체 확인
-});
-  var firestore = firebase.firestore();
-  // Firebase 인증 상태 변화 감지
-  firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-      // 로그인 상태
-      var uid = user.uid;
-      sessionStorage.setItem('uid', uid);
-      console.log('UID:', uid);
-  
-  
-  
-      var userNameElement = document.getElementById('userName');
-      var emailElement = document.getElementById('email');
-      firestore.collection('users').doc(uid).get().then(function (doc) {
-        var nickname = doc.data().nickname;
-        var email = user.email;
-        userNameElement.textContent = '이름: ' + nickname;
-        emailElement.textContent = '아이디: ' + email;
-      }).catch(function (error) {
-        console.log('Error getting user document:', error);
-      });
-  
-  
-  
-  
-  
-  
-    } else {
-      // 로그아웃 버튼 클릭 이벤트 추가
-      document.getElementById('logoutButton').addEventListener('click', function() {
-        firebase.auth().signOut().then(function() {
-            // 로그아웃 성공 시
-            console.log('로그아웃 성공');
-            sessionStorage.removeItem('uid');
-            location.href = 'index.html'; // 로그아웃 후 이동할 페이지
-        }).catch(function(error) {
-            // 로그아웃 중 에러 발생 시
-            console.log('Error during logout:', error);
-        });
-    });
-    }
+  // 로그아웃 버튼 클릭 이벤트
+  document.getElementById('logoutButton').addEventListener('click', function () {
+      fetch('/logout.jsp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+      })
+          .then(response => response.json())
+          .then(data => {
+              if (data.status === 'success') {
+                  alert('로그아웃 성공!');
+                  location.href = 'index.jsp'; // 로그아웃 후 메인 페이지로 이동
+              } else {
+                  alert('로그아웃 실패. 다시 시도해주세요.');
+              }
+          })
+          .catch(error => console.error('로그아웃 요청 중 오류 발생:', error));
   });
-  
+});

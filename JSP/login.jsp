@@ -1,46 +1,32 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/login.css" />
-    <script type="module" defer src="/js/login.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-storage.js"></script>
-    <title>Document</title>
-  </head>
-  <body>
-    <div class="MainLogin">
-      <div class="Mainleft">
-        <div class="box">
-          <img class="logoimg" src="/image/logo.png" />
-        </div>
-      </div>
-      <div class="Mainright">
-        <div class="loginBox">
-          <h1 id="loginTitle">로그인</h1>
-          <form id="login-form" method="post" onsubmit="return handleLogin(event)">
-            <label for="id">아이디</label>
-            <input type="email" id="email" placeholder="이메일" />
-            <br />
-            <label for="password" style="margin-top: 30px">비밀번호</label>
-            <input type="password" id="password" placeholder="비밀번호" />
-            <br />
-            <button style="margin-top: 20px; margin-bottom: 20px" type="submit">
-              로그인
-            </button>
-          </form>
+<%@ page import="com.google.firebase.auth.FirebaseAuth" %>
+<%@ page import="com.google.firebase.auth.FirebaseAuthException" %>
+<%@ page import="com.google.firebase.database.DatabaseReference" %>
+<%@ page import="com.google.firebase.database.FirebaseDatabase" %>
+<%@ page import="java.io.PrintWriter" %>
 
-          <div id="loginloadbox" style="display: none">
-            <div class="spinner-grow text-primary" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
-</html>
+<%
+    String email = request.getParameter("email");
+    String password = request.getParameter("password");
+
+    try {
+        // Firebase Admin SDK로 사용자 인증
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String uid = auth.verifyPassword(email, password).getUid();
+
+        // 사용자 정보를 세션에 저장
+        session.setAttribute("uid", uid);
+        session.setAttribute("email", email);
+
+        // 성공 응답
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        out.print("{\"status\":\"success\",\"uid\":\"" + uid + "\"}");
+        out.flush();
+    } catch (FirebaseAuthException e) {
+        // 오류 응답
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        out.print("{\"status\":\"error\",\"message\":\"" + e.getMessage() + "\"}");
+        out.flush();
+    }
+%>
