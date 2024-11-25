@@ -1,26 +1,52 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="java.io.*, javax.servlet.*, javax.servlet.http.*" %>
+<%@ page import="com.google.firebase.FirebaseApp" %>
+<%@ page import="com.google.firebase.FirebaseOptions" %>
+<%@ page import="com.google.firebase.auth.FirebaseAuth" %>
+<%@ page import="com.google.firebase.auth.UserRecord" %>
+<%@ page import="com.google.firebase.database.FirebaseDatabase" %>
+<%@ page import="java.io.FileInputStream" %>
+<%@ page import="org.json.JSONObject" %>
 
 <%
-    // 요청에서 사용자 데이터 가져오기
+    // Firebase 초기화 (한 번만 실행)
+    if (FirebaseApp.getApps().isEmpty()) {
+        FileInputStream serviceAccount = new FileInputStream("/path/to/serviceAccountKey.json");
+
+        FirebaseOptions options = FirebaseOptions.builder()
+            .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+            .setDatabaseUrl("https://your-database-name.firebaseio.com/")
+            .build();
+
+        FirebaseApp.initializeApp(options);
+    }
+
+    // 요청 데이터 읽기
     String email = request.getParameter("email");
+    String password = request.getParameter("password");
     String nickname = request.getParameter("nickname");
 
-    // 세션 생성 및 사용자 데이터 저장
-    HttpSession session = request.getSession();
-    session.setAttribute("userEmail", email);
-    session.setAttribute("userNickname", nickname);
+    response.setContentType("application/json");
+    JSONObject jsonResponse = new JSONObject();
 
-    // 예를 들어, 추가로 서버에서 사용자 등록 확인 로직을 수행할 수 있음
-    if (email != null && nickname != null) {
-        // 서버 측 확인 및 로깅
-        out.println("서버에서 회원가입 데이터 수신: " + email + " (" + nickname + ")");
-        
-        // 회원가입 성공 메시지를 클라이언트로 반환
-        response.sendRedirect("login.html"); // 성공 후 리다이렉트할 페이지
-    } else {
-        // 오류 처리
-        out.println("잘못된 데이터입니다.");
-        response.sendRedirect("join.html"); // 오류 시 다시 회원가입 페이지로 리다이렉트
+    try {
+        // Firebase 인증 사용자 생성
+        UserRecord.CreateRequest createRequest = new UserRecord.CreateRequest()
+            .setEmail(email)
+            .setPassword(password)
+            .setDisplayName(nickname);
+
+        UserRecord userRecord = FirebaseAuth.getInstance().createUser(createRequest);
+
+        // Firestore 또는 Realtime Database에 추가 정보 저장
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database.getReference("users").child(userRecord.getUid()).setValueAsync(nickname);
+
+        jsonResponse.put("status", "success");
+        jsonResponse.put("message", "회원가입 성공!");
+        response.getWriter().write(jsonResponse.toString());
+    } catch (Exception e) {
+        e.printStackTrace();
+        jsonResponse.put("status", "error");
+        jsonResponse.put("message", "회원가입 중 오류 발생: " + e.getMessage());
+        response.getWriter().write(jsonResponse.toString());
     }
 %>

@@ -1,32 +1,55 @@
+<%@ page import="com.google.firebase.FirebaseApp" %>
+<%@ page import="com.google.firebase.FirebaseOptions" %>
 <%@ page import="com.google.firebase.auth.FirebaseAuth" %>
 <%@ page import="com.google.firebase.auth.FirebaseAuthException" %>
-<%@ page import="com.google.firebase.database.DatabaseReference" %>
 <%@ page import="com.google.firebase.database.FirebaseDatabase" %>
-<%@ page import="java.io.PrintWriter" %>
+<%@ page import="java.io.FileInputStream" %>
+<%@ page import="org.json.JSONObject" %>
 
 <%
+    // Firebase 초기화 (한 번만 실행)
+    if (FirebaseApp.getApps().isEmpty()) {
+        FileInputStream serviceAccount = new FileInputStream("/path/to/serviceAccountKey.json");
+
+        FirebaseOptions options = FirebaseOptions.builder()
+            .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+            .setDatabaseUrl("https://your-database-name.firebaseio.com/")
+            .build();
+
+        FirebaseApp.initializeApp(options);
+    }
+
+    // 요청 데이터 읽기
     String email = request.getParameter("email");
     String password = request.getParameter("password");
 
+    response.setContentType("application/json");
+    JSONObject jsonResponse = new JSONObject();
+
     try {
-        // Firebase Admin SDK로 사용자 인증
+        // Firebase 인증 사용자 확인
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        String uid = auth.verifyPassword(email, password).getUid();
+        UserRecord userRecord = auth.getUserByEmail(email);
 
-        // 사용자 정보를 세션에 저장
-        session.setAttribute("uid", uid);
+        // Firestore 또는 Realtime Database에서 추가 정보 가져오기
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        String nickname = database.getReference("users").child(userRecord.getUid()).get().getValue(String.class);
+
+        // 세션에 사용자 정보 저장
         session.setAttribute("email", email);
+        session.setAttribute("nickname", nickname);
 
-        // 성공 응답
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        out.print("{\"status\":\"success\",\"uid\":\"" + uid + "\"}");
-        out.flush();
+        jsonResponse.put("status", "success");
+        jsonResponse.put("message", "로그인 성공!");
+        response.getWriter().write(jsonResponse.toString());
     } catch (FirebaseAuthException e) {
-        // 오류 응답
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        out.print("{\"status\":\"error\",\"message\":\"" + e.getMessage() + "\"}");
-        out.flush();
+        jsonResponse.put("status", "error");
+        jsonResponse.put("message", "로그인 실패: 이메일 또는 비밀번호를 확인하세요.");
+        response.getWriter().write(jsonResponse.toString());
+    } catch (Exception e) {
+        e.printStackTrace();
+        jsonResponse.put("status", "error");
+        jsonResponse.put("message", "로그인 중 오류 발생: " + e.getMessage());
+        response.getWriter().write(jsonResponse.toString());
     }
 %>
