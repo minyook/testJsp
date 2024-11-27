@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('여행 계획이 Firestore에 저장되었습니다.');
 
             // 폼 제출로 서버에 데이터 전송
-            window.location.href = "myPlan.jsp";
+            window.location.href = "../html/myPlan.html";
         } catch (e) {
             console.error('Error saving travel plan to Firestore:', e);
             alert('여행 계획을 저장하는 중 오류가 발생했습니다. 콘솔에서 자세한 내용을 확인하세요.');

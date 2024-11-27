@@ -57,7 +57,7 @@ document.getElementById('plan-button').addEventListener('click', async function(
     loadingElement.style.display = 'none';
 
     // 결과 페이지로 이동
-    window.location.href = 'plan.jsp';
+    window.location.href = '../html/plan.html?nocache=' + new Date().getTime();
   } catch (error) {
     console.error('Error:', error);
     alert('AI 요청 중 오류가 발생했습니다. 콘솔에서 자세한 내용을 확인하세요.');
